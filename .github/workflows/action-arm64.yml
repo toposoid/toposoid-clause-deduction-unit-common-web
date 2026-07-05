@@ -85,6 +85,6 @@ jobs:
           context: .
           push: true
           provenance: false
-          tags: toposoid/${{ env.PJ_REPO }}:${{ env.PJ_VERSION }}-armd64
+          tags: toposoid/${{ env.PJ_REPO }}:${{ env.PJ_VERSION }}-arm64
           build-args: |
             TARGET_BRANCH=${{ env.PJ_BRANCH }}
