@@ -1,0 +1,18 @@
+name: Test And Build
+on:
+  push:
+    branches:
+      - feature
+  workflow_dispatch:
+env:
+  PJ_ACTOR: toposoid
+  PJ_REPO: toposoid-clause-deduction-unit-common-web
+  PJ_BRANCH: feature
+  PJ_VERSION: 0.7-SNAPSHOT
+jobs:
+  unit-test_toposoid-clause-deduction-unit-common-web-amd64:
+    uses: ./.github/workflows/action-amd64.yml
+    secrets: inherit  
+  unit-test_toposoid-clause-deduction-unit-common-web-arm64:
+    uses: ./.github/workflows/action-arm64.yml
+    secrets: inherit  
