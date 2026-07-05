@@ -1,0 +1,17 @@
+logs
+target
+/.bsp
+/.idea
+/.idea_modules
+/.classpath
+/.project
+/.settings
+/RUNNING_PID
+.DS_Store
+docker-compose-local.yml
+.devcontainer
+.metals
+.vscode
+project/project
+metals.sbt
+.bloop

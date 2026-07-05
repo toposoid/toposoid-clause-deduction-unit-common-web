@@ -1,0 +1,304 @@
+/*
+ * Copyright (C) 2025  Linked Ideal LLC.[https://linked-ideal.com/]
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package controllers
+
+
+import com.ideal.linked.toposoid.common.{FeatureType, DataEntryType, Neo4JUtilsImpl, ToposoidUtils, TransversalState}
+import com.ideal.linked.toposoid.knowledgebase.regist.model.{ImageReference, Knowledge, KnowledgeForImage, PropositionRelation, Reference}
+import com.ideal.linked.common.DeploymentConverter.conf
+import com.ideal.linked.toposoid.knowledgebase.featurevector.model.RegistContentResult
+import com.ideal.linked.toposoid.protocol.model.neo4j.Neo4jRecords
+import com.ideal.linked.toposoid.protocol.model.parser.{KnowledgeForParser, KnowledgeSentenceSetForParser}
+import com.ideal.linked.toposoid.knowledgebase.model.{KnowledgeBaseNode, KnowledgeFeatureReference, LocalContext}
+import com.ideal.linked.toposoid.test.utils.TestUtils
+import play.api.libs.json.Json
+import com.ideal.linked.toposoid.protocol.model.base.VerifyingEdges
+import com.ideal.linked.toposoid.protocol.model.base.{AnalyzedSentenceObject, AnalyzedSentenceObjects}
+import com.ideal.linked.toposoid.common.ToposoidUtils
+
+case class ImageBoxInfo(x:Int, y:Int, weight:Int, height:Int)
+
+object TestUtilsEx {
+  val neo4JUtils = new Neo4JUtilsImpl()
+  def deleteNeo4JAllData(transversalState:TransversalState): Unit = {
+    val query = "MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r"
+    neo4JUtils.executeQuery(query, transversalState)
+  }
+
+  def executeQueryAndReturn(query:String, transversalState:TransversalState): Neo4jRecords = {
+    neo4JUtils.executeQueryAndReturn(query, transversalState)
+  }
+
+  def registerSingleClaim(knowledgeForParser:KnowledgeForParser, transversalState:TransversalState):Unit = {
+    val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
+      List.empty[KnowledgeForParser],
+      List.empty[PropositionRelation],
+      List(knowledgeForParser),
+      List.empty[PropositionRelation])
+    TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
+  }
+
+  def registerSingleClaimForFeature(knowledgeForParser:KnowledgeForParser, transversalState:TransversalState):Unit = {
+    val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
+      List.empty[KnowledgeForParser],
+      List.empty[PropositionRelation],
+      List(knowledgeForParser),
+      List.empty[PropositionRelation])
+    TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = true)
+  }
+
+  def checkMatchedBothSide(json:String, sentenceId:String, verifyingEdgesList:List[VerifyingEdges], correctSize:Int ):Unit = {
+
+      val evalA:VerifyingEdges = verifyingEdgesList.filter(x => x.sentenceId.equals(sentenceId)).head
+      val coveredEdges = evalA.coveredPropositionEdges.filter(x => x.destinationNode.isConfirmed && x.sourceNode.isConfirmed)
+      assert(coveredEdges.size == correctSize)
+
+      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(json).as[AnalyzedSentenceObjects]
+      //両側被覆エッジに含まれるノードのチェック
+      val targetAso = analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceId.equals(sentenceId)).head      
+      coveredEdges.foreach(x => {
+        assert(targetAso.nodeMap.get(x.sourceNode.terminalId).get.predicateArgumentStructure.surface.equals(x.sourceNode.terminalSurface))
+        assert(targetAso.nodeMap.get(x.destinationNode.terminalId).get.predicateArgumentStructure.surface.equals(x.destinationNode.terminalSurface))        
+      })
+
+      val sentenceIds = coveredEdges.foldLeft(List.empty[String]){
+        (acc, x) => {        
+          val sourceKnowledgeSentenceIds = x.sourceNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => {
+            acc2 + y.sentenceId
+          }}        
+          val destinationKnowledgeSentenceIds = x.destinationNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => {
+            acc2 + y.sentenceId
+          }}
+          val targetSentenceIds = sourceKnowledgeSentenceIds & destinationKnowledgeSentenceIds 
+          assert(targetSentenceIds.size > 0)
+          acc ::: targetSentenceIds.toList
+        }
+      }            
+      assert(sentenceIds.groupBy(identity).filter(x => x._2.size >= correctSize).size > 0)
+  }
+
+  def checkMatchedOneSide(json:String, sentenceId:String, verifyingEdgesList:List[VerifyingEdges], correctSize:Int ):Unit = {
+
+      val evalA:VerifyingEdges = verifyingEdgesList.filter(x => x.sentenceId.equals(sentenceId)).head
+      val coveredEdges = evalA.coveredPropositionEdges.filter(x => x.destinationNode.isConfirmed || x.sourceNode.isConfirmed)
+      assert(coveredEdges.size == correctSize)
+
+      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(json).as[AnalyzedSentenceObjects]
+      //両側被覆エッジに含まれるノードのチェック
+      val targetAso = analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceId.equals(sentenceId)).head      
+      coveredEdges.foreach(x => {
+        if(x.sourceNode.isConfirmed){
+          assert(targetAso.nodeMap.get(x.sourceNode.terminalId).get.predicateArgumentStructure.surface.equals(x.sourceNode.terminalSurface))
+        }
+        if(x.destinationNode.isConfirmed){
+          assert(targetAso.nodeMap.get(x.destinationNode.terminalId).get.predicateArgumentStructure.surface.equals(x.destinationNode.terminalSurface))        
+        }        
+      })
+
+      val sentenceIds = coveredEdges.foldLeft(List.empty[String]){
+        (acc, x) => {           
+          val sourceKnowledgeSentenceIds = x.sourceNode.isConfirmed match {
+            case true => {
+              x.sourceNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => {
+                acc2 + y.sentenceId
+              }}
+            }
+            case _ => {
+              Set.empty[String]
+            }
+          }
+          val destinationKnowledgeSentenceIds = x.destinationNode.isConfirmed match {
+            case true => {
+              x.destinationNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => {
+                acc2 + y.sentenceId
+              }}
+            }
+            case _ => {
+              Set.empty[String]
+            }
+          }
+          val targetSentenceIds = sourceKnowledgeSentenceIds | destinationKnowledgeSentenceIds 
+          if(x.sourceNode.isConfirmed || x.destinationNode.isConfirmed){
+            assert(targetSentenceIds.size > 0)
+          }        
+          acc ::: targetSentenceIds.toList
+        }
+      }      
+      assert(sentenceIds.groupBy(identity).filter(x => x._2.size >= correctSize).size > 0)
+  }
+
+
+  def checkMatchedFuzzy(json:String, sentenceId:String, verifyingEdgesList:List[VerifyingEdges], correctSize:Int ):Unit = {
+
+    val evalA:VerifyingEdges = verifyingEdgesList.filter(x => x.sentenceId.equals(sentenceId)).head
+    val coveredEdges = evalA.coveredPropositionEdges.filter(x => !x.destinationNode.isConfirmed && !x.sourceNode.isConfirmed)
+    assert(coveredEdges.size == correctSize)
+
+    val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(json).as[AnalyzedSentenceObjects]
+    //両側被覆エッジに含まれるノードのチェック
+    val targetAso = analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceId.equals(sentenceId)).head      
+    coveredEdges.foreach(x => {
+      
+      if(!x.sourceNode.isConfirmed){      
+        assert(targetAso.nodeMap.get(x.sourceNode.terminalId).get.predicateArgumentStructure.surface.equals(x.sourceNode.terminalSurface))
+      }
+      if(!x.destinationNode.isConfirmed){
+        assert(targetAso.nodeMap.get(x.destinationNode.terminalId).get.predicateArgumentStructure.surface.equals(x.destinationNode.terminalSurface))        
+      }        
+    })
+
+    val sentenceIds = coveredEdges.foldLeft(List.empty[String]){
+      (acc, x) => {      
+        //評価されたエッジがあるということは、ノードの関係性を保持しており、nodeIdを指定すれば必ず一意に決まる。    
+        //命題サイドのエッジのcaseNameを特定
+        val targetEdges = targetAso.edgeList.filter(z => {
+          z.sourceId.equals(x.sourceNode.terminalId) &&
+          z.destinationId.equals(x.destinationNode.terminalId)
+        })              
+        assert(targetEdges.size == 1)
+
+        val sourceKnowledgeSentenceIds = !x.sourceNode.isConfirmed match {
+          case true => {
+            x.sourceNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => { 
+              //ノード間の関係性のみチェック             
+              assert(y.caseNameOnEdge.equals(targetEdges.head.caseStr))
+              acc2 + y.sentenceId
+            }}
+          }
+          case _ => {
+            Set.empty[String]
+          }
+        }
+        val destinationKnowledgeSentenceIds = !x.destinationNode.isConfirmed match {
+          case true => {
+            x.destinationNode.matchedKnowledgeNodes.foldLeft(Set.empty[String]){(acc2, y) => {
+              //ノード間の関係性のみチェック
+              assert(y.caseNameOnEdge.equals(targetEdges.head.caseStr))
+              acc2 + y.sentenceId
+            }}
+          }
+          case _ => {
+            Set.empty[String]
+          }
+        }
+        val targetSentenceIds = sourceKnowledgeSentenceIds & destinationKnowledgeSentenceIds 
+        if(!x.sourceNode.isConfirmed && !x.destinationNode.isConfirmed){
+          assert(targetSentenceIds.size > 0)
+        }        
+        acc ::: targetSentenceIds.toList
+      }
+    }      
+    assert(sentenceIds.groupBy(identity).filter(x => x._2.size >= correctSize).size > 0)
+  }
+
+  var usedUuidList = List.empty[String]
+  def getUUID(): String = {
+    var uuid: String = java.util.UUID.randomUUID().toString
+    while (usedUuidList.filter(_.equals(uuid)).size > 0) {
+      uuid = java.util.UUID.randomUUID().toString
+    }
+    usedUuidList = usedUuidList :+ uuid
+    //logger.info(uuid)
+    uuid
+  }
+
+  def getKnowledge(lang:String, sentence: String, reference: Reference, imageBoxInfo: ImageBoxInfo, transversalState: TransversalState): Knowledge = {
+    Knowledge(sentence, lang, "{}", false, List(getImageInfo(reference, imageBoxInfo, transversalState)))
+  }
+
+  def getImageInfo(reference: Reference, imageBoxInfo: ImageBoxInfo, transversalState: TransversalState): KnowledgeForImage = {
+    getImageInfo2(List((reference, imageBoxInfo)), transversalState).head
+  }
+
+  def getKnowledge2(lang:String, sentence: String, imageInfoList:List[(Reference, ImageBoxInfo)],transversalState: TransversalState): Knowledge = {
+    Knowledge(sentence, lang, "{}", false, getImageInfo2(imageInfoList, transversalState))
+  }
+
+  def getImageInfo2(imageInfoList:List[(Reference, ImageBoxInfo)], transversalState: TransversalState): List[KnowledgeForImage] = {
+
+    imageInfoList.map(x => {
+      val reference = x._1
+      val imageBoxInfo = x._2
+      val imageReference = ImageReference(reference: Reference, imageBoxInfo.x, imageBoxInfo.y, imageBoxInfo.weight, imageBoxInfo.height)
+      val knowledgeForImage = KnowledgeForImage(id = getUUID(), imageReference = imageReference)
+      val registContentResultJson = ToposoidUtils.callComponent(
+        Json.toJson(knowledgeForImage).toString(),
+        conf.getString("TOPOSOID_CONTENTS_ADMIN_HOST"),
+        conf.getString("TOPOSOID_CONTENTS_ADMIN_PORT"),
+        "registImage",
+        transversalState)
+      val registContentResult: RegistContentResult = Json.parse(registContentResultJson).as[RegistContentResult]
+      registContentResult.knowledgeForImage
+    })
+  }
+
+  def addImageInfoToAnalyzedSentenceObjects(lang:String,inputSentence: String, knowledgeForImages: List[KnowledgeForImage], transversalState: TransversalState): String = {
+
+    val json = lang match {
+      case "ja_JP" => ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
+      case "en_US" => ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_EN_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_EN_WEB_PORT"), "analyze", transversalState)
+    }
+    //val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze")
+    val asos: AnalyzedSentenceObjects = Json.parse(json).as[AnalyzedSentenceObjects]
+    val updatedAsos = asos.analyzedSentenceObjects.foldLeft(List.empty[AnalyzedSentenceObject]) {
+      (acc, x) => {
+        val nodeMap = x.nodeMap.foldLeft(Map.empty[String, KnowledgeBaseNode]) {
+          (acc2, y) => {
+            val compatibleImages = knowledgeForImages.filter(z => {
+              z.imageReference.reference.surface == y._2.predicateArgumentStructure.surface && z.imageReference.reference.surfaceIndex == y._2.predicateArgumentStructure.currentId
+            })
+            val knowledgeFeatureReferences = compatibleImages.foldLeft(List.empty[KnowledgeFeatureReference]) {
+              (acc3, z) => {
+                acc3 :+ KnowledgeFeatureReference(
+                  propositionId = y._2.propositionId,
+                  sentenceId = y._2.sentenceId,
+                  featureId = getUUID(),
+                  featureType = FeatureType.IMAGE.index,
+                  url = z.imageReference.reference.url,
+                  source = z.imageReference.reference.originalUrlOrReference,
+                  featureInputType = DataEntryType.MANUAL.index,
+                  extentText = "{}")
+              }
+            }
+            val knowledgeBaseNode = KnowledgeBaseNode(
+              nodeId = y._2.nodeId,
+              propositionId = y._2.propositionId,
+              sentenceId = y._2.sentenceId,
+              predicateArgumentStructure = y._2.predicateArgumentStructure,
+              localContext = LocalContext(
+                lang = y._2.localContext.lang,
+                namedEntities = y._2.localContext.namedEntities,
+                rangeExpressions = y._2.localContext.rangeExpressions,
+                categories = y._2.localContext.categories,
+                domains = y._2.localContext.domains,
+                knowledgeFeatureReferences = knowledgeFeatureReferences,
+                properNouns = y._2.localContext.properNouns)
+                )
+            acc2 ++ Map(y._1 -> knowledgeBaseNode)
+          }
+        }
+        acc :+ AnalyzedSentenceObject(
+          nodeMap = nodeMap,
+          edgeList = x.edgeList,
+          knowledgeBaseSemiGlobalNode = x.knowledgeBaseSemiGlobalNode,
+          deductionResult = x.deductionResult)
+      }
+    }
+    Json.toJson(AnalyzedSentenceObjects(updatedAsos, asos.deductionConfiguration)).toString()
+  }
+}
