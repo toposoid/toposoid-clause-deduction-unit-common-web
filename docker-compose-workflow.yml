@@ -31,6 +31,8 @@ services:
       - TOPOSOID_CONTENTS_ADMIN_PORT=9012
       - TOPOSOID_IN_MEMORY_DB_WEB_HOST=data-accessor-redis-web
       - TOPOSOID_IN_MEMORY_DB_WEB_PORT=9015
+      - TOPOSOID_FILE_UPLOAD_FACADE_HOST=toposoid-file-upload-facade-web
+      - TOPOSOID_FILE_UPLOAD_FACADE_PORT=9024      
       - PLAY_HTTP_PORT=9201
     ports:
       - 9201:9201
@@ -216,6 +218,13 @@ services:
     ports:
       - 9013:9013
 
+  toposoid-common-table-recognition-web:
+    image: toposoid/toposoid-common-table-recognition-web:0.7-SNAPSHOT
+    environment:
+      - TOPOSOID_TABLE_RECOGNITION_MODEL=tabicl 
+    ports:
+      - 9019:9019
+
   data-accessor-sentence-weaviate-web:
     image: toposoid/data-accessor-weaviate-web:0.7-SNAPSHOT
     environment:
@@ -285,3 +294,58 @@ services:
       ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-palm,text2vec-openai,generative-openai,generative-cohere,generative-palm,ref2vec-centroid,reranker-cohere,qna-openai'
       CLUSTER_HOSTNAME: 'node1'
 
+  data-accessor-table-weaviate-web:
+    image: toposoid/data-accessor-weaviate-web:0.7-SNAPSHOT
+    environment:
+      - TOPOSOID_WEAVIATE_HOST=table-weaviate
+      - TOPOSOID_WEAVIATE_PORT=8083
+      - TOPOSOID_WEAVIATE_SIMILARITY_THRESHOLD=0.98
+      - TOPOSOID_DATA_ACCESSOR_PORT=9011
+    ports:
+      - 9023:9011
+    depends_on:
+      - table-weaviate
+
+  table-weaviate:
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - '8083'
+      - --scheme
+      - http
+    image: cr.weaviate.io/semitechnologies/weaviate:1.26.3
+    ports:
+      - 8083:8083
+    #volumes:
+    #  - /var/weaviate:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'text2vec-huggingface'
+      HUGGINGFACE_APIKEY: ''
+      ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-palm,text2vec-openai,generative-openai,generative-cohere,generative-palm,ref2vec-centroid,reranker-cohere,qna-openai'
+      CLUSTER_HOSTNAME: 'node1'
+
+  toposoid-file-upload-facade-web:
+    image: toposoid/toposoid-file-upload-facade-web:0.7-SNAPSHOT
+    tty: true
+    environment:
+      - TOPOSOID_CONTENTS_URL=http://toposoid-contents-admin-web:9012/contents/
+      - TOPOSOID_CONTENTS_ADMIN_HOST=toposoid-contents-admin-web
+      - TOPOSOID_CONTENTS_ADMIN_PORT=9012      
+      - TOPOSOID_FILESCAN_HOST=clamav   
+      - TOPOSOID_FILESCAN_PORT=3310
+    ports:
+      - 9024:9024
+    depends_on:
+      - clamav
+
+
+  clamav:
+    image: clamav/clamav-debian
+    container_name: clamav
+    ports:
+      - "3310:3310" 
