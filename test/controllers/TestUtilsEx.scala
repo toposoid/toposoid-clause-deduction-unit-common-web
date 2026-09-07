@@ -21,7 +21,7 @@ package controllers
 import com.ideal.linked.toposoid.common.{FeatureType, DataEntryType, Neo4JUtilsImpl, ToposoidUtils, TransversalState}
 import com.ideal.linked.toposoid.knowledgebase.regist.model.{ImageReference, Knowledge, KnowledgeForImage, PropositionRelation, Reference}
 import com.ideal.linked.common.DeploymentConverter.conf
-import com.ideal.linked.toposoid.knowledgebase.featurevector.model.RegistContentResult
+//import com.ideal.linked.toposoid.knowledgebase.featurevector.model.RegistContentResult
 import com.ideal.linked.toposoid.protocol.model.neo4j.Neo4jRecords
 import com.ideal.linked.toposoid.protocol.model.parser.{KnowledgeForParser, KnowledgeSentenceSetForParser}
 import com.ideal.linked.toposoid.knowledgebase.model.{KnowledgeBaseNode, KnowledgeFeatureReference, LocalContext}
@@ -31,7 +31,7 @@ import com.ideal.linked.toposoid.protocol.model.base.VerifyingEdges
 import com.ideal.linked.toposoid.protocol.model.base.{AnalyzedSentenceObject, AnalyzedSentenceObjects}
 import com.ideal.linked.toposoid.common.ToposoidUtils
 
-case class ImageBoxInfo(x:Int, y:Int, weight:Int, height:Int)
+//case class ImageBoxInfo(x:Int, y:Int, weight:Int, height:Int)
 
 object TestUtilsEx {
   val neo4JUtils = new Neo4JUtilsImpl()
@@ -62,6 +62,18 @@ object TestUtilsEx {
     TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = true)
   }
 
+  var usedUuidList = List.empty[String]
+  def getUUID(): String = {
+    var uuid: String = java.util.UUID.randomUUID().toString
+    while (usedUuidList.filter(_.equals(uuid)).size > 0) {
+      uuid = java.util.UUID.randomUUID().toString
+    }
+    usedUuidList = usedUuidList :+ uuid
+    //logger.info(uuid)
+    uuid
+  }
+
+  /*
   def checkMatchedBothSide(json:String, sentenceId:String, verifyingEdgesList:List[VerifyingEdges], correctSize:Int ):Unit = {
 
       val evalA:VerifyingEdges = verifyingEdgesList.filter(x => x.sentenceId.equals(sentenceId)).head
@@ -206,17 +218,6 @@ object TestUtilsEx {
     assert(sentenceIds.groupBy(identity).filter(x => x._2.size >= correctSize).size > 0)
   }
 
-  var usedUuidList = List.empty[String]
-  def getUUID(): String = {
-    var uuid: String = java.util.UUID.randomUUID().toString
-    while (usedUuidList.filter(_.equals(uuid)).size > 0) {
-      uuid = java.util.UUID.randomUUID().toString
-    }
-    usedUuidList = usedUuidList :+ uuid
-    //logger.info(uuid)
-    uuid
-  }
-
   def getKnowledge(lang:String, sentence: String, reference: Reference, imageBoxInfo: ImageBoxInfo, transversalState: TransversalState): Knowledge = {
     Knowledge(sentence, lang, "{}", false, List(getImageInfo(reference, imageBoxInfo, transversalState)))
   }
@@ -301,4 +302,5 @@ object TestUtilsEx {
     }
     Json.toJson(AnalyzedSentenceObjects(updatedAsos, asos.deductionConfiguration)).toString()
   }
+  */
 }
