@@ -86,7 +86,6 @@ jobs:
             docker compose -f docker-compose-workflow.yml exec -T ${{ env.PJ_REPO }} bash -c "cd ${{ env.PJ_REPO }} && sbt 'testOnly **.*table*English4_1'"
             docker compose -f docker-compose-workflow.yml exec -T ${{ env.PJ_REPO }} bash -c "cd ${{ env.PJ_REPO }} && sbt 'testOnly **.*table*English4_2'"
             docker compose -f docker-compose-workflow.yml exec -T ${{ env.PJ_REPO }} bash -c "cd ${{ env.PJ_REPO }} && sbt 'testOnly **.*table*English4_3'"
-
             docker rm --force $(docker ps -a -q) > /dev/null 2>&1 && :
             docker rmi --force ${{ env.PJ_REPO }}:${{ env.PJ_VERSION }}> /dev/null 2>&1 && :
       - name: Docker meta
