@@ -25,8 +25,13 @@ services:
       - TOPOSOID_IMAGE_VECTORDB_ACCESSOR_HOST=data-accessor-image-weaviate-web
       - TOPOSOID_IMAGE_VECTORDB_ACCESSOR_PORT=9011
       - TOPOSOID_IMAGE_VECTORDB_SEARCH_NUM_MAX=5
+      - TOPOSOID_TABLE_VECTORDB_ACCESSOR_HOST=data-accessor-table-weaviate-web
+      - TOPOSOID_TABLE_VECTORDB_ACCESSOR_PORT=9011 #Docker Container to Docker Container Access
+      - TOPOSOID_TABLE_VECTORDB_SEARCH_NUM_MAX=5
       - TOPOSOID_COMMON_IMAGE_RECOGNITION_HOST=toposoid-common-image-recognition-web
       - TOPOSOID_COMMON_IMAGE_RECOGNITION_PORT=9013
+      - TOPOSOID_COMMON_TABLE_RECOGNITION_HOST=toposoid-common-table-recognition-web
+      - TOPOSOID_COMMON_TABLE_RECOGNITION_PORT=9019
       - TOPOSOID_CONTENTS_ADMIN_HOST=toposoid-contents-admin-web
       - TOPOSOID_CONTENTS_ADMIN_PORT=9012
       - TOPOSOID_IN_MEMORY_DB_WEB_HOST=data-accessor-redis-web
