@@ -42,6 +42,25 @@ services:
     ports:
       - 9201:9201
 
+  toposoid-deduction-unit-table-vector-match-web:
+    image: toposoid/toposoid-deduction-unit-table-vector-match-web:0.7-SNAPSHOT
+    tty: true
+    environment:
+      - PRIVATE_IP_ADDRESS=toposoid-deduction-unit-table-vector-match-web
+      - TOPOSOID_GRAPHDB_WEB_HOST=data-accessor-neo4j-web
+      - TOPOSOID_GRAPHDB_WEB_PORT=9005
+      - TOPOSOID_TABLE_VECTORDB_ACCESSOR_HOST=data-accessor-table-weaviate-web
+      - TOPOSOID_TABLE_VECTORDB_ACCESSOR_PORT=9011
+      - TOPOSOID_TABLE_VECTORDB_SEARCH_NUM_MAX=5
+      - TOPOSOID_COMMON_TABLE_RECOGNITION_HOST=toposoid-common-table-recognition-web
+      - TOPOSOID_COMMON_TABLE_RECOGNITION_PORT=9019
+      - TOPOSOID_JVM_XMS=512m
+      - TOPOSOID_JVM_XMX=4g
+      - TOPOSOID_JVM_XSS=512k
+      - PLAY_HTTP_PORT=9107
+    ports:
+      - 9107:9107
+
   toposoid-deduction-unit-image-vector-match-web:
     image: toposoid/toposoid-deduction-unit-image-vector-match-web:0.7-SNAPSHOT
     environment:
