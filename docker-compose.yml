@@ -6,9 +6,9 @@ services:
       - PRIVATE_IP_ADDRESS=toposoid-clause-deduction-unit-common-web
       - TOPOSOID_GRAPHDB_WEB_HOST=data-accessor-neo4j-web
       - TOPOSOID_GRAPHDB_WEB_PORT=9005
-      - TOPOSOID_CLAUSE_DEDUCTION_UNITS=["toposoid-deduction-unit-exact-match-web", "toposoid-deduction-unit-synonym-match-web", "toposoid-deduction-unit-image-vector-match-web"]
-      - TOPOSOID_CLAUSE_DEDUCTION_PORTS=["9101", "9102", "9104"]
-      - TOPOSOID_CLAUSE_DEDUCTION_NAMES=["ClauseBaseMatch","ClauseSynonymMatch","ClauseImageMatch"]
+      - TOPOSOID_CLAUSE_DEDUCTION_UNITS=["toposoid-deduction-unit-exact-match-web", "toposoid-deduction-unit-synonym-match-web", "toposoid-deduction-unit-image-vector-match-web", "toposoid-deduction-unit-table-vector-match-web"]
+      - TOPOSOID_CLAUSE_DEDUCTION_PORTS=["9101", "9102", "9104", "9107"]
+      - TOPOSOID_CLAUSE_DEDUCTION_NAMES=["ClauseBaseMatch","ClauseSynonymMatch","ClauseImageMatch", "ClauseTableMatch"]
       - TOPOSOID_ONLY_CLAUSE_DEDUCTION_FORCE=false
       - TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST=toposoid-sentence-parser-japanese-web
       - TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT=9001
