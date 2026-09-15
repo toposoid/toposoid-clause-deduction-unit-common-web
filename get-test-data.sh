@@ -1,0 +1,9 @@
+#!/bin/bash
+curl -X GET http://images.cocodataset.org/val2017/000000039769.jpg -o /app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image1.jpg
+curl -X GET http://images.cocodataset.org/train2017/000000428746.jpg -o /app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg
+curl -X GET https://farm8.staticflickr.com/7103/7210629614_5a388d9a9c_z.jpg -o /app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image3.jpg
+curl -X GET https://farm2.staticflickr.com/1070/5110702674_350f5b367d_z.jpg -o /app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image4.jpg
+curl --connect-timeout 5 -m 60 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -X GET "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000001086170&fileKind=0" -o /app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table1.xlsx
+curl --connect-timeout 5 -m 60 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -X GET "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040292480&fileKind=1" -o /app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table2.csv
+curl --connect-timeout 5 -m 60 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -X GET "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040410921&fileKind=4" -o /app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table3.xls
+curl --connect-timeout 5 -m 60 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -X GET "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032117292&fileKind=0" -o /app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table4.xlsx

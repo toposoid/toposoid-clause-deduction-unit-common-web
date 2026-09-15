@@ -15,3 +15,7 @@ docker-compose-local.yml
 project/project
 metals.sbt
 .bloop
+test/data/images/*
+!test/data/images/.gitkeep
+test/data/tables/*
+!test/data/tables/.gitkeep

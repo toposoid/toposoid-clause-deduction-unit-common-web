@@ -397,7 +397,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
             val deductionReulst = DeductionResult(
               status = x.deductionResult.status, 
               authenticityType = x.deductionResult.authenticityType, 
-              coveredPropositionEdges = confirmedCoveredPropositionEdges ++ coveredPropositionEdges.head.coveredPropositionEdges, 
+              coveredPropositionEdges = (confirmedCoveredPropositionEdges ++ coveredPropositionEdges.head.coveredPropositionEdges).distinct, 
               evidenceKnowledgeList = x.deductionResult.evidenceKnowledgeList, 
               havePremiseInGivenProposition = x.deductionResult.havePremiseInGivenProposition,
               deductionPhaseType = x.deductionResult.deductionPhaseType)
