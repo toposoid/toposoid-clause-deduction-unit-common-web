@@ -72,56 +72,64 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
 
   val sentenceA = "There are two cats."
   val referenceA = Reference(url = "", surface = "cats", surfaceIndex = 3, isWholeSentence = false,
-    originalUrlOrReference = "http://images.cocodataset.org/val2017/000000039769.jpg")
+  //  originalUrlOrReference = "http://images.cocodataset.org/val2017/000000039769.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image1.jpg")
   val imageReferenceA = ImageReference(referenceA, x = 11, y = 11, width = 466, height = 310)
   val knowledgeForImageA = KnowledgeForImage(getUUID(), imageReferenceA)        
   //val imageBoxInfo1 = ImageBoxInfo(x = 11, y = 11, weight = 466, height = 310)
 
   val sentenceB = "There is a dog."
   val referenceB = Reference(url = "", surface = "dog", surfaceIndex = 3, isWholeSentence = false,
-    originalUrlOrReference = "http://images.cocodataset.org/train2017/000000428746.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg")  
+  //  originalUrlOrReference = "http://images.cocodataset.org/train2017/000000428746.jpg")
   val imageReferenceB = ImageReference(referenceB, x = 77, y = 98, width = 433, height = 222)
   val knowledgeForImageB = KnowledgeForImage(getUUID(), imageReferenceB)      
   //val imageBoxInfo2 = ImageBoxInfo(x = 77, y = 98, weight = 433, height = 222)
 
   val sentenceC = "A large truck is parked."
   val referenceC = Reference(url = "", surface = "truck", surfaceIndex = 2, isWholeSentence = false,
-    originalUrlOrReference = "https://farm8.staticflickr.com/7103/7210629614_5a388d9a9c_z.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image3.jpg")
+  //  originalUrlOrReference = "https://farm8.staticflickr.com/7103/7210629614_5a388d9a9c_z.jpg")
   val imageReferenceC = ImageReference(referenceC, x = 23, y = 25, width = 601, height = 341)
   val knowledgeForImageC = KnowledgeForImage(getUUID(), imageReferenceC)      
   //val imageBoxInfo3 = ImageBoxInfo(x = 23, y = 25, weight = 601, height = 341)
 
   val sentenceD = "Two jets are flying."
   val referenceD = Reference(url = "", surface = "jets", surfaceIndex = 1, isWholeSentence = false,
-    originalUrlOrReference = "https://farm2.staticflickr.com/1070/5110702674_350f5b367d_z.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image4.jpg")
+  //  originalUrlOrReference = "https://farm2.staticflickr.com/1070/5110702674_350f5b367d_z.jpg")
   val imageReferenceD = ImageReference(referenceD, x = 223, y = 108, width = 140, height = 205)
   val knowledgeForImageD = KnowledgeForImage(getUUID(), imageReferenceD)      
   //val imageBoxInfo4 = ImageBoxInfo(x = 223, y = 108, weight = 140, height = 205)
 
   val paraphraseA = "There are two pets."
   val referenceParaA = Reference(url = "", surface = "pets", surfaceIndex = 3, isWholeSentence = false,
-    originalUrlOrReference = "http://images.cocodataset.org/val2017/000000039769.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image1.jpg")
+  //  originalUrlOrReference = "http://images.cocodataset.org/val2017/000000039769.jpg")
   val imageReferenceParaA = ImageReference(referenceParaA, x = 11, y = 11, width = 466, height = 310)
   val knowledgeForImageParaA = KnowledgeForImage(getUUID(), imageReferenceParaA)  
   //val imageBoxInfoPara1Ok = ImageBoxInfo(x = 11, y = 11, weight = 466, height = 310)
 
   val paraphraseB = "There is an animal"
   val referenceParaB = Reference(url = "", surface = "animal", surfaceIndex = 3, isWholeSentence = false,
-    originalUrlOrReference = "http://images.cocodataset.org/train2017/000000428746.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg")
+  //  originalUrlOrReference = "http://images.cocodataset.org/train2017/000000428746.jpg")
   val imageReferenceParaB = ImageReference(referenceParaB, x = 77, y = 98, width = 433, height = 222)
   val knowledgeForImageParaB = KnowledgeForImage(getUUID(), imageReferenceParaB)  
   //val imageBoxInfoPara2Ok = ImageBoxInfo(x = 77, y = 98, weight = 433, height = 222)
 
   val paraphraseC = "A large vehicle is parked."
   val referenceParaC = Reference(url = "", surface = "vehicle", surfaceIndex = 2, isWholeSentence = false,
-    originalUrlOrReference = "https://farm8.staticflickr.com/7103/7210629614_5a388d9a9c_z.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image3.jpg")
+  //  originalUrlOrReference = "https://farm8.staticflickr.com/7103/7210629614_5a388d9a9c_z.jpg")
   val imageReferenceParaC = ImageReference(referenceParaC, x = 23, y = 25, width = 601, height = 341)
   val knowledgeForImageParaC = KnowledgeForImage(getUUID(), imageReferenceParaC)    
   //val imageBoxInfoPara3Ok = ImageBoxInfo(x = 23, y = 25, weight = 601, height = 341)
 
   val paraphraseD = "Two planes are flying."
   val referenceParaD = Reference(url = "", surface = "planes", surfaceIndex = 1, isWholeSentence = false,
-    originalUrlOrReference = "https://farm2.staticflickr.com/1070/5110702674_350f5b367d_z.jpg")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image4.jpg")
+  //  originalUrlOrReference = "https://farm2.staticflickr.com/1070/5110702674_350f5b367d_z.jpg")
   val imageReferenceParaD = ImageReference(referenceParaD, x = 223, y = 108, width = 140, height = 205)
   val knowledgeForImageParaD = KnowledgeForImage(getUUID(), imageReferenceParaD) 
 

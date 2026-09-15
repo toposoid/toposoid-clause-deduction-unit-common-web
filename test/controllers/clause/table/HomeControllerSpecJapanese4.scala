@@ -72,52 +72,59 @@ class HomeControllerSpecJapanese4 extends PlaySpec with BeforeAndAfter with Befo
 
   val sentenceA = "証拠データが一つあります。"
   val referenceA = Reference(url = "", surface = "証拠データが", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000001086170&fileKind=0")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table1.xlsx")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000001086170&fileKind=0")
   val tableReferenceA = TableReference(referenceA, skipHeaderRows=5, skipRowList=List(),multiHeaderRows=4, sheetNameForExcel= "se0101")
   val knowledgeForTableA = KnowledgeForTable(getUUID(), tableReferenceA)  
 
   val sentenceB = "証拠データを一つ提出します。"
   val referenceB = Reference(url = "", surface = "証拠データを", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040292480&fileKind=1")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table2.csv")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040292480&fileKind=1")
   val tableReferenceB = TableReference(referenceB, skipHeaderRows=8, skipRowList=List(),multiHeaderRows=1, sheetNameForExcel= "")  
   val knowledgeForTableB = KnowledgeForTable(getUUID(), tableReferenceB)    
   
   val sentenceC = "証拠データが一つ必要です。"
   val referenceC = Reference(url = "", surface = "証拠データが", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040410921&fileKind=4")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table3.xls")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040410921&fileKind=4")
   val tableReferenceC = TableReference(referenceC, skipHeaderRows=3, skipRowList=List(),multiHeaderRows=3, sheetNameForExcel= "")  
   val knowledgeForTableC = KnowledgeForTable(getUUID(), tableReferenceC)  
 
   val sentenceD = "立証用の証拠データに依存します。"  
   val referenceD = Reference(url = "", surface = "証拠データに", surfaceIndex = 1, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032117292&fileKind=0")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table4.xlsx")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032117292&fileKind=0")
   val tableReferenceD = TableReference(referenceD, skipHeaderRows=2, skipRowList=List(),multiHeaderRows=1, sheetNameForExcel= "")  
   val knowledgeForTableD = KnowledgeForTable(getUUID(), tableReferenceD)  
 
   val paraphraseA = "証拠サンプルが一つあります。"
   val referenceParaA = Reference(url = "", surface = "証拠サンプルが", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000001086170&fileKind=0")  
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table1.xlsx")
+   // originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000001086170&fileKind=0")  
   val tableReferenceParaA = TableReference(referenceParaA, skipHeaderRows=5, skipRowList=List(),multiHeaderRows=4, sheetNameForExcel= "se0101")
   val knowledgeForTableParaA = KnowledgeForTable(getUUID(), tableReferenceParaA)
 
   val paraphraseB = "証拠サンプルを一つ提出します。"
   val referenceParaB = Reference(url = "", surface = "証拠サンプルを", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040292480&fileKind=1")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table2.csv")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040292480&fileKind=1")
   val tableReferenceParaB = TableReference(referenceParaB, skipHeaderRows=8, skipRowList=List(),multiHeaderRows=1, sheetNameForExcel= "")
   val knowledgeForTableParaB = KnowledgeForTable(getUUID(), tableReferenceParaB)  
 
   val paraphraseC = "証拠サンプルが一つ必要です。"
   val referenceParaC = Reference(url = "", surface = "証拠サンプルが", surfaceIndex = 0, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040410921&fileKind=4")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table3.xls")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000040410921&fileKind=4")
   val tableReferenceParaC = TableReference(referenceParaC, skipHeaderRows=3, skipRowList=List(),multiHeaderRows=3, sheetNameForExcel= "")
   val knowledgeForTableParaC = KnowledgeForTable(getUUID(), tableReferenceParaC)  
 
   val paraphraseD = "立証用の証拠サンプルに依存します。"
   val referenceParaD = Reference(url = "", surface = "証拠サンプルに", surfaceIndex = 1, isWholeSentence = false,
-    originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032117292&fileKind=0")
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/tables/test_table4.xlsx")
+  //  originalUrlOrReference = "https://www.e-stat.go.jp/stat-search/file-download?statInfId=000032117292&fileKind=0")
   val tableReferenceParaD = TableReference(referenceParaD, skipHeaderRows=2, skipRowList=List(),multiHeaderRows=1, sheetNameForExcel= "")
-  val knowledgeForTableParaD = KnowledgeForTable(getUUID(), tableReferenceParaD)    
-
+  val knowledgeForTableParaD = KnowledgeForTable(getUUID(), tableReferenceParaD)   
 
   val lang = "ja_JP"
 
