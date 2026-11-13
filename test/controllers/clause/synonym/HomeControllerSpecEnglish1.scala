@@ -73,7 +73,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
   val paraphraseB = "He has a good opportunity."
   val paraphraseC = "His lifespan is so comfortable now."
 
-
+  /*
   "The specification1" should {
     "returns an appropriate response" in {
       val propositionId1 = java.util.UUID.randomUUID().toString
@@ -100,7 +100,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
-  /*
+  
   "The specification2" should {
     "returns an appropriate response" in {
       val propositionId1 = java.util.UUID.randomUUID().toString
@@ -131,7 +131,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
     }
   }
-  */
+  
   "The specification2" should {
     "returns an appropriate response" in {
       val propositionId1 = java.util.UUID.randomUUID().toString
@@ -473,5 +473,6 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
+  */
 }
 

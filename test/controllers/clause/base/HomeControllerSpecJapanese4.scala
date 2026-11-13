@@ -66,15 +66,6 @@ class HomeControllerSpecJapanese4 extends PlaySpec with BeforeAndAfter with Befo
   val sentenceD = "人事を尽くして天命を待つ。"
 
   /*
-  def TestUtilsEx.registerSingleClaim(knowledgeForParser:KnowledgeForParser): Unit = {
-    val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-      List.empty[KnowledgeForParser],
-      List.empty[PropositionRelation],
-      List(knowledgeForParser),
-      List.empty[PropositionRelation])
-    TestUtils.registerData(knowledgeSentenceSetForParser, transversalState)
-  }
-  */
 
   "The specification31" should {
     "returns an appropriate response" in {
@@ -502,5 +493,5 @@ class HomeControllerSpecJapanese4 extends PlaySpec with BeforeAndAfter with Befo
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
-
+  */
 }

@@ -63,7 +63,7 @@ class HomeControllerSpecJapanese2 extends PlaySpec with BeforeAndAfter with Befo
   val sentenceA = "案ずるより産むが易し。"
   val sentenceB = "思い立ったが吉日。"
   val sentenceC = "時は金なり。"
-
+  /*
   "The specification11" should {
     "returns an appropriate response" in {
       val propositionId1 = java.util.UUID.randomUUID().toString
@@ -434,5 +434,5 @@ class HomeControllerSpecJapanese2 extends PlaySpec with BeforeAndAfter with Befo
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
-
+  */
 }

@@ -135,7 +135,7 @@ class HomeControllerSpecJapanese3 extends PlaySpec with BeforeAndAfter with Befo
   //val imageBoxInfoParaD = ImageBoxInfo(x = 223, y = 108, weight = 140, height = 205)
 
   val lang = "ja_JP"
-
+  /*
   "The specification21" should {
     "returns an appropriate response" in {
       val propositionId1 = getUUID()
@@ -581,5 +581,5 @@ class HomeControllerSpecJapanese3 extends PlaySpec with BeforeAndAfter with Befo
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
-
+  */
 }

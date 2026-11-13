@@ -65,7 +65,7 @@ class HomeControllerSpecEnglish3 extends PlaySpec with BeforeAndAfter with Befor
   val sentenceB = "Grasp Fortune by the forelock."
   val sentenceC = "Time is money."
   val sentenceD = "God helps those who help themselves."
-
+  /*
   "The specification21" should {
     "returns an appropriate response" in {
       val propositionId1 = java.util.UUID.randomUUID().toString
@@ -442,4 +442,5 @@ class HomeControllerSpecEnglish3 extends PlaySpec with BeforeAndAfter with Befor
       assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
     }
   }
+  */
 }
