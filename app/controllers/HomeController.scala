@@ -128,7 +128,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
               propositionId = y.propositionId,
               sentenceId = y.sentenceId,
               featureInfoList =List(y.featureInfo),
-              deductionUnits = deductionUnitsByNodeId.get(y.nodeId).get,
+              deductionUnits = deductionUnitsByNodeId.get(y.nodeId).get,              
               isNegativeMeaning = if (y.featureInfo.featureType == FeatureType.PREDICATE_ARGUMENT.index) y.isNegativeMeaning else isNegativeMeaningForNotSentence
             )
             KnowledgeBaseSideInfoWithNodeId(knowledgeBaseSideInfo, y.nodeId)
@@ -307,7 +307,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
             val sentenceId = x2.head.value.localNode.get.sentenceId            
             //val matchedFeatureInfo = MatchedFeatureInfo(sentenceId, 1)
             //acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List(matchedFeatureInfo), List("exact-match"))
-            acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List.empty[MatchedFeatureInfo], List("ClauseBaseMatch"))
+            acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List.empty[MatchedFeatureInfo], List.empty[String])
           }
         }
         acc ::: additionalMatchedPropositionInfo
