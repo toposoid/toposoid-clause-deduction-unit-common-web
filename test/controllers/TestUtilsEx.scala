@@ -25,7 +25,7 @@ import com.ideal.linked.common.DeploymentConverter.conf
 import com.ideal.linked.toposoid.protocol.model.neo4j.Neo4jRecords
 import com.ideal.linked.toposoid.protocol.model.parser.{KnowledgeForParser, KnowledgeSentenceSetForParser}
 import com.ideal.linked.toposoid.knowledgebase.model.{KnowledgeBaseNode, KnowledgeFeatureReference, LocalContext}
-import com.ideal.linked.toposoid.test.utils.TestUtils.{uploadImage, uploadTable, getAnalyzedSentenceObjectsJsonForSemiGlobal, registerData}
+import com.ideal.linked.toposoid.test.utils.TestUtils.{uploadImage, uploadTable, getAnalyzedSentenceObjectsJson, registerData}
 import play.api.libs.json.Json
 import com.ideal.linked.toposoid.protocol.model.base.VerifyingEdges
 import com.ideal.linked.toposoid.protocol.model.base.{AnalyzedSentenceObject, AnalyzedSentenceObjects}
@@ -119,6 +119,6 @@ object TestUtilsEx {
       KnowledgeForParser(propositionId, getUUID(), Knowledge(x._1, lang, "{}", false, x._2.map(uploadImage(_, transversalState)), x._3.map(uploadTable(_, transversalState))))
     })
     val inputSentenceForParser = InputSentenceForParser(premiseKnowledgeForParsers, claimKnowledgeForParsers, ActionModeType.DEDUCTION_MODE.index)
-    getAnalyzedSentenceObjectsJsonForSemiGlobal(lang,inputSentenceForParser, transversalState)
+    getAnalyzedSentenceObjectsJson(lang,inputSentenceForParser, transversalState)
   }  
 }
