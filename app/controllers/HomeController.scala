@@ -293,6 +293,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    */
   private def checkOnlyClaimNodes(neo4jRecords: Neo4jRecords, targetMatchedPropositionInfoList: List[KnowledgeBaseSideInfo], transversalState:TransversalState): List[KnowledgeBaseSideInfo] = {
 
+
     val claimMatchedPropositionInfo: List[KnowledgeBaseSideInfo] = neo4jRecords.records.foldLeft(List.empty[KnowledgeBaseSideInfo]) {
       (acc, x) => {
         val surface1: String = x(0).value.localNode.get.predicateArgumentStructure.surface
@@ -307,6 +308,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
             val sentenceId = x2.head.value.localNode.get.sentenceId            
             //val matchedFeatureInfo = MatchedFeatureInfo(sentenceId, 1)
             //acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List(matchedFeatureInfo), List("exact-match"))
+
             acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List.empty[MatchedFeatureInfo], List.empty[String])
           }
         }
@@ -323,14 +325,34 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val candidates: List[KnowledgeBaseSideInfo] = checkOtherRelation(claimMatchedPropositionInfo.distinct, transversalState) 
     //candidatesは、propositionId上の重複はない。
     if (candidates.size == 0) return List.empty[KnowledgeBaseSideInfo]
+
+        
+    //neo4jRecordsは、Premiseの情報
+    val sentenceIdOnPremiseSide = neo4jRecords.records.map(x => x(0).value.localNode.get.sentenceId).distinct.head
+    val neo4jUtils = Neo4JUtilsImpl()
+    val existDenialWord = getExistDenialWord(neo4jUtils, sentenceIdOnPremiseSide, transversalState)
+
     //ensure there are no Premise. only claim!
-    val finalChoice: List[KnowledgeBaseSideInfo] = candidates.filterNot(x => this.havePremise(x, transversalState))
+    val finalChoice: List[KnowledgeBaseSideInfo] = candidates.filterNot(x => havePremise(x, transversalState) || checkNegativeMatch(neo4jUtils, x.sentenceId,  existDenialWord, transversalState))
     finalChoice.size match {
       case 0 => List.empty[KnowledgeBaseSideInfo]
       case _ => finalChoice ::: targetMatchedPropositionInfoList
     }
   }
 
+  private def getExistDenialWord(neo4jUtils:Neo4JUtilsImpl, sentenceId:String, transversalState:TransversalState):Boolean = {    
+    val query = "MATCH (n) WHERE n.sentenceId='%s' AND n.isDenialWord='true' AND (n.caseType='ROOT' OR n.caseType='文末') RETURN n".format(sentenceId)
+    val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "", transversalState)
+    val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+    neo4jRecords.records.size > 0
+  }
+
+  private def checkNegativeMatch(neo4jUtils:Neo4JUtilsImpl, sentenceId:String, existDenialWord:Boolean, transversalState:TransversalState): Boolean = {
+    val query = "MATCH (n) WHERE n.sentenceId='%s' AND n.isDenialWord='%s' AND (n.caseType='ROOT' OR n.caseType='文末') RETURN n".format(sentenceId, existDenialWord)
+    val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "", transversalState)
+    val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+    neo4jRecords.records.size == 0
+  }
   /**
    *
    * @param edge
