@@ -71,7 +71,7 @@ class HomeControllerSpecEnglish4 extends PlaySpec with BeforeAndAfter with Befor
 
   val sentenceNotA = "In this study, we don't propose a novel algorithm to reduce computational complexity while maintaining high prediction accuracy."
   val sentenceNotB = "All measurements were not conducted at room temperature under a controlled atmosphere to minimize external noise."
-  val sentenceNotC = "As shown in Fig. 2, the did not proposed method outperformed conventional approaches by approximately 15% in terms of energy efficiency."
+  val sentenceNotC = "As shown in Fig. 2, the proposed method did not outperform conventional approaches by approximately 15% in terms of energy efficiency."
   val sentenceNotD = "Although these findings demonstrate the feasibility of the system, further investigation isn't required to verify its long-term stability."
 
   val paraphraseA = "In this study, we propose a novel algorithm to reduce computational complexity while maintaining high prediction accuracy."
