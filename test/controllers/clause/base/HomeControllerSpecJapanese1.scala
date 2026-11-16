@@ -82,7 +82,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
 
   val lang ="ja_JP"
 
-  "The specification1" should {
+  "The specification1_1" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
@@ -100,7 +100,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-     "The specification2" should {
+     "The specification1_2" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
@@ -118,7 +118,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   } 
 
-   "The specification3" should {
+   "The specification1_3" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))      
@@ -138,7 +138,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   } 
 
-   "The specification4" should {
+   "The specification1_4" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -162,7 +162,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
   } 
 
 
-  "The specification5" should {
+  "The specification1_5" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -185,7 +185,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification6" should {
+  "The specification1_6" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -211,7 +211,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification7" should {
+  "The specification1_7" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -236,7 +236,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification7a" should {
+  "The specification1_8" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -261,7 +261,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification7b" should {
+  "The specification1_9" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -286,7 +286,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification8" should {
+  "The specification1_10" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -309,7 +309,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification9" should {
+  "The specification1_11" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -332,7 +332,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification10" should {
+  "The specification1_12" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -355,7 +355,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification11" should {
+  "The specification1_13" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -378,7 +378,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification12" should {
+  "The specification1_14" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -401,7 +401,7 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification13" should {
+  "The specification1_15" should {
     "returns an appropriate response" in {
       val propositionId= TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -423,364 +423,5 @@ class HomeControllerSpecJapanese1 extends PlaySpec with BeforeAndAfter with Befo
       //deleteFeatureVectorByPropositionId(propositionId, transversalState)      
     }
   }
-  /*
-  "The specification1" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List.empty[KnowledgeForParser]
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
   
-  "The specification2" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId1, sentenceId1, knowledge1)),
-        List.empty[PropositionRelation],
-        List.empty[KnowledgeForParser],
-        List.empty[PropositionRelation])
-
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List.empty[KnowledgeForParser]
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalState)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-    }
-  }
-  
-  "The specification2" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}")
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId1, sentenceId1, knowledge1)),
-        List.empty[PropositionRelation],
-        List(KnowledgeForParser(propositionId1, sentenceId2, knowledge2)),
-        List.empty[PropositionRelation])
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List.empty[KnowledgeForParser]
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification3" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}")
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId1, sentenceId1, knowledge1)),
-        List.empty[PropositionRelation],
-        List(KnowledgeForParser(propositionId1, sentenceId2, knowledge2)),
-        List.empty[PropositionRelation])
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge =List.empty[KnowledgeForParser]
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification4" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val propositionId2 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val sentenceId3 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}")
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId2, sentenceId2, knowledge1)),
-        List.empty[PropositionRelation],
-        List(KnowledgeForParser(propositionId2, sentenceId3, knowledge2)),
-        List.empty[PropositionRelation])
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
-
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List.empty[KnowledgeForParser]
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification5" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}")
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification6" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}", false)
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge2), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification7" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}", false)
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId1, sentenceId1, knowledge1)),
-        List.empty[PropositionRelation],
-        List(KnowledgeForParser(propositionId1, sentenceId2, knowledge2)),
-        List.empty[PropositionRelation])
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification8" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val propositionId2 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val sentenceId3 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}")
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-      val knowledgeSentenceSetForParser = KnowledgeSentenceSetForParser(
-        List(KnowledgeForParser(propositionId2, sentenceId2, knowledge1)),
-        List.empty[PropositionRelation],
-        List(KnowledgeForParser(propositionId2, sentenceId3, knowledge2)),
-        List.empty[PropositionRelation])
-      TestUtils.registerData(knowledgeSentenceSetForParser, transversalState, addVectorFlag = false)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 1)
-    }
-  }
-
-  "The specification8A" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val propositionId2 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val sentenceId2 = java.util.UUID.randomUUID().toString
-      val sentenceId3 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA, "ja_JP", "{}")
-      val knowledge2 = Knowledge(sentenceB, "ja_JP", "{}")
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId2, sentenceId2, knowledge2), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification9" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}", false)
-      val knowledge3 = Knowledge(sentenceC,"ja_JP", "{}", false)
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge1), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1), KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge3))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-
-  "The specification10" should {
-    "returns an appropriate response" in {
-      val propositionId1 = java.util.UUID.randomUUID().toString
-      val sentenceId1 = java.util.UUID.randomUUID().toString
-      val knowledge1 = Knowledge(sentenceA,"ja_JP", "{}", false)
-      val knowledge2 = Knowledge(sentenceB,"ja_JP", "{}", false)
-      val knowledge3 = Knowledge(sentenceC,"ja_JP", "{}", false)
-      TestUtilsEx.registerSingleClaim(KnowledgeForParser(propositionId1, sentenceId1, knowledge2), transversalState)
-      val propositionIdForInference = java.util.UUID.randomUUID().toString
-      val premiseKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge1), KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge2))
-      val claimKnowledge = List(KnowledgeForParser(propositionIdForInference, java.util.UUID.randomUUID().toString, knowledge3))
-      val inputSentence = Json.toJson(InputSentenceForParser(premiseKnowledge, claimKnowledge, ActionModeType.DEDUCTION_MODE.index)).toString()
-      val json = ToposoidUtils.callComponent(inputSentence, conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_HOST"), conf.getString("TOPOSOID_SENTENCE_PARSER_JP_WEB_PORT"), "analyze", transversalState)
-      val fr = FakeRequest(POST, "/execute")
-        .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
-        .withJsonBody(Json.parse(json))
-      val result = call(controller.execute(), fr)
-      status(result) mustBe OK
-      contentType(result) mustBe Some("application/json")
-      val jsonResult: String = contentAsJson(result).toString()
-      val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(jsonResult).as[AnalyzedSentenceObjects]
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.PREMISE.index) && x.deductionResult.status).size == 1)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.status).size == 0)
-      assert(analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.knowledgeBaseSemiGlobalNode.sentenceType.equals(SentenceType.CLAIM.index) && x.deductionResult.havePremiseInGivenProposition).size == 0)
-    }
-  }
-  */
 }

@@ -79,7 +79,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
   val paraphraseD = "計測誤差を最小限に抑えるため、サンプリング周波数を10kHzに設定した上で連続的なデータ収集を行います。"
   
   val lang ="ja_JP"
-  "The specification41" should {
+  "The specification5_1" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
@@ -105,7 +105,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification42" should {
+  "The specification5_2" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceB, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotB, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
@@ -131,7 +131,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification43" should {
+  "The specification5_3" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
       val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List.empty[KnowledgeForImage], List.empty[KnowledgeForTable])))
@@ -162,7 +162,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification44" should {
+  "The specification5_4" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -192,7 +192,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification45" should {
+  "The specification5_5" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -222,7 +222,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification46" should {
+  "The specification5_6" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -252,7 +252,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }
 
-  "The specification47" should {
+  "The specification5_7" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -283,7 +283,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
   }  
 
 
-  "The specification48" should {
+  "The specification5_8" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -313,7 +313,7 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
     }
   }  
 
-  "The specification49" should {
+  "The specification5_9" should {
     "returns an appropriate response" in {
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
@@ -341,5 +341,5 @@ class HomeControllerSpecJapanese5 extends PlaySpec with BeforeAndAfter with Befo
       //deleteFeatureVectorByPropositionId(propositionId1, transversalState)          
 
     }
-  } 
+  }
 }
