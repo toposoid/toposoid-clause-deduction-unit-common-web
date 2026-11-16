@@ -82,14 +82,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       logger.info(ToposoidUtils.formatMessageForLogger("TOPOSOID_ONLY_CLAUSE_DEDUCTION_FORCE is true.", transversalState.userId))      
       false
     }else{
-      analyzedSentenceObjects.analyzedSentenceObjects.filterNot(x => x.deductionResult.status).size match {
+      analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.deductionResult.authenticityType == AuthenticityType.INSUFFICIENT.index).size match {
         case 0 => {
-          logger.info(ToposoidUtils.formatMessageForLogger("An NG result was found in the output of the previous inference unit.", transversalState.userId))      
-          true
-        }
-        case _ => {
           logger.info(ToposoidUtils.formatMessageForLogger("All results from the previous inference unit were OK.", transversalState.userId))      
           false
+        }
+        case _ => {
+          logger.info(ToposoidUtils.formatMessageForLogger("An NG result was found in the output of the previous inference unit.", transversalState.userId))      
+          true
         } 
       }
     }
@@ -117,12 +117,19 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
         val deductionUnitsByNodeId:Map[String, List[String]] = x.sourceNode.matchedKnowledgeNodes.map(y => (y.nodeId -> x.sourceNode.matchedKnowledgeNodes.map(z => z.deductionUnit))).toMap ++ x.destinationNode.matchedKnowledgeNodes.map(y => (y.nodeId -> x.destinationNode.matchedKnowledgeNodes.map(z => z.deductionUnit))).toMap
           
         if(confirmedSentenceIds.size > 0){
+
+          //isNegativeMeaningは、featureInfoのfeatureTypeがSENTENCE以外に対しては、featureTypeがSENTENCEのもの全ての＆演算の結果を保存する。
+          val isNegativeMeaningForNotSentence = distinctMatchedKnowledgeNodes.filter(y => y.featureInfo.featureType == FeatureType.PREDICATE_ARGUMENT.index).foldLeft(true){
+            (acc, y) => acc & y.isNegativeMeaning
+          }
+
           val confirmedKnowledgeBaseSideInfoList:List[KnowledgeBaseSideInfoWithNodeId] = distinctMatchedKnowledgeNodes.map(y => {            
             val knowledgeBaseSideInfo = KnowledgeBaseSideInfo(
               propositionId = y.propositionId,
               sentenceId = y.sentenceId,
               featureInfoList =List(y.featureInfo),
-              deductionUnits = deductionUnitsByNodeId.get(y.nodeId).get
+              deductionUnits = deductionUnitsByNodeId.get(y.nodeId).get,              
+              isNegativeMeaning = if (y.featureInfo.featureType == FeatureType.PREDICATE_ARGUMENT.index) y.isNegativeMeaning else isNegativeMeaningForNotSentence
             )
             KnowledgeBaseSideInfoWithNodeId(knowledgeBaseSideInfo, y.nodeId)
           })
@@ -152,15 +159,30 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     val updatedKnowledgeBaseSideInfo = getCoveredKnowledgeBaseSideInfo(extractedKnowledgeBaseSideInfo, aso, transversalState)
     //val (updatedCoveredPropositionEdges, updatedKnowledgeBaseSideInfo) = updateCoveredPropositionEdges(mergedKnowledgeBaseSideInfo, aso, unsettledCoveredPropositionEdges, deductionUnitName, transversalState)
     if (updatedKnowledgeBaseSideInfo.size == 0){
-      val deductionResult: DeductionResult = new DeductionResult(aso.deductionResult.status, aso.deductionResult.authenticityType, unsettledCoveredPropositionEdges, aso.deductionResult.evidenceKnowledgeList:::updatedKnowledgeBaseSideInfo)
+      val deductionResult: DeductionResult = new DeductionResult(aso.deductionResult.authenticityType, unsettledCoveredPropositionEdges, aso.deductionResult.evidenceKnowledgeList:::updatedKnowledgeBaseSideInfo)
       AnalyzedSentenceObject(aso.nodeMap, aso.edgeList, aso.knowledgeBaseSemiGlobalNode, deductionResult)
     }else{
-      val status = true
-      val deductionResult: DeductionResult = new DeductionResult(status,AuthenticityType.TRUE.index, unsettledCoveredPropositionEdges, aso.deductionResult.evidenceKnowledgeList:::updatedKnowledgeBaseSideInfo)
+      val authenticityType = getAuthenticityType(updatedKnowledgeBaseSideInfo)      
+      val deductionResult: DeductionResult = new DeductionResult(authenticityType.index, unsettledCoveredPropositionEdges, aso.deductionResult.evidenceKnowledgeList:::updatedKnowledgeBaseSideInfo)
       //val updateDeductionResult = aso.deductionResult.updated(aso.knowledgeBaseSemiGlobalNode.sentenceType.toString, deductionResult)
       AnalyzedSentenceObject(aso.nodeMap, aso.edgeList, aso.knowledgeBaseSemiGlobalNode, deductionResult)
+    }    
+  }
+
+  private def getAuthenticityType(knowledgeBaseSideInfoList:List[KnowledgeBaseSideInfo]): AuthenticityType = {
+    if(knowledgeBaseSideInfoList.size == 0) return AuthenticityType.INSUFFICIENT
+    val supportedKnowledges =knowledgeBaseSideInfoList.filter(x => !x.isNegativeMeaning && x.deductionUnits.size > 0 && x.featureInfoList.filter(y => y.featureType == FeatureType.PREDICATE_ARGUMENT.index).size > 0) //各dductionUnitで確定したものだけで評価。A→B, A パターンのAは除く。
+    val refutedKnowledges =knowledgeBaseSideInfoList.filter(x => x.isNegativeMeaning && x.deductionUnits.size > 0 && x.featureInfoList.filter(y => y.featureType == FeatureType.PREDICATE_ARGUMENT.index).size > 0) //各dductionUnitで確定したものだけで評価。A→B, A パターンのAは除く。
+    refutedKnowledges.size match {
+      case 0 => AuthenticityType.SUPPORTED
+      case _ => {
+        if(supportedKnowledges.size == 0){
+          AuthenticityType.REFUTED
+        }else{
+          AuthenticityType.CONFLICTING
+        }
+      }   
     }
-    
   }
 
   private def getCoveredKnowledgeBaseSideInfo(extractedKnowledgeBaseSideInfo:List[KnowledgeBaseSideInfo], aso: AnalyzedSentenceObject, /*unsettledCoveredPropositionEdges:List[CoveredPropositionEdge],deductionUnitName:String,*/  transversalState:TransversalState) :List[KnowledgeBaseSideInfo]  ={
@@ -168,14 +190,18 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     //もし同じ表層かつ同じ関係性も持つエッジが一つの文章で重複して存在する場合、単純にpropositionIdをユニークにしても命題のエッジの数を被覆したとは言えない。重複も含めてカウントする必要がある。
     //val dupFreq = mergedKnowledgeBaseSideInfo.map(_.propositionId).groupBy(identity).filter(x => x._2.size > deductionResult.coveredPropositionEdges.size)
     //全てのエッジが何か対応があるという条件がないとダメっていうのは良いんだっけか？ 部分的に一致しているという情報は残さない？
-    val dupFreq = extractedKnowledgeBaseSideInfo.map(_.propositionId).groupBy(identity).filter(x => x._2.size >= aso.nodeMap.size)
+    
+    val selectedKnowledgeBaseSideInfo = checkOtherRelation(extractedKnowledgeBaseSideInfo, transversalState)
+
+
+    val dupFreq = selectedKnowledgeBaseSideInfo.map(_.propositionId).groupBy(identity).filter(x => x._2.size >= aso.nodeMap.size)
     //if(dupFreq.size == 0) return aso.deductionResult.evidenceKnowledgeList
     if(dupFreq.size == 0) return List.empty[KnowledgeBaseSideInfo]
     val minFreqSize = dupFreq.mapValues(_.size).minBy(_._2)._2
   
-    val propositionIdsHavingMinFreq: List[String] = extractedKnowledgeBaseSideInfo.map(_.propositionId).groupBy(identity).mapValues(_.size).filter(_._2 == minFreqSize).map(_._1).toList
-    val filteredKnowledgeBaseSideInfo = extractedKnowledgeBaseSideInfo.filter(x =>  propositionIdsHavingMinFreq.contains(x.propositionId))
-    val coveredKnowledgeBaseSideInfoList = extractedKnowledgeBaseSideInfo.filter(x =>  propositionIdsHavingMinFreq.contains(x.propositionId))
+    val propositionIdsHavingMinFreq: List[String] = selectedKnowledgeBaseSideInfo.map(_.propositionId).groupBy(identity).mapValues(_.size).filter(_._2 == minFreqSize).map(_._1).toList
+    val filteredKnowledgeBaseSideInfo = selectedKnowledgeBaseSideInfo.filter(x =>  propositionIdsHavingMinFreq.contains(x.propositionId))
+    val coveredKnowledgeBaseSideInfoList = selectedKnowledgeBaseSideInfo.filter(x =>  propositionIdsHavingMinFreq.contains(x.propositionId))
     //Does the chosen proposalId have a premise? T
     //he coveredPropositionInfoList contains a mixture of those that are established only by Claims and those that have Premise.
     val coveredKnowledgeBaseSideInfoListHavingPremise: List[KnowledgeBaseSideInfo] = coveredKnowledgeBaseSideInfoList.filter(havePremise(_, transversalState))
@@ -188,6 +214,40 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     finalCoveredKnowledgeBaseSideInfoList.distinct
   }
 
+  private def checkOtherRelation(extractedKnowledgeBaseSideInfo: List[KnowledgeBaseSideInfo], transversalState:TransversalState): List[KnowledgeBaseSideInfo] = {
+    //すでに各DeductionUnitで、Claim側にsentenceが存在していることが保証されている。
+    //そのSentenceのリレーションも調べて、自明に真と確定できるものをさらに抽出。
+    //まず単独の主張だけで真と言えるものを優先する。
+    val neo4jUtils = Neo4JUtilsImpl()
+    val candidates1 = extractedKnowledgeBaseSideInfo.filter(x => {
+      val query = "MATCH (n:SemiGlobalClaimNode) - [e:SemiGlobalEdge] - (m:SemiGlobalClaimNode) WHERE n.sentenceId ='%s'  RETURN n, e, m".format(x.sentenceId)
+      val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "n", transversalState)
+      val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+      neo4jRecords.records.size match {
+        case 0 => true //すでにClaimとしてsentenceが存在していて、リレーションがないのでこれがあればそれを優先する。
+        case _ => false
+      }
+    })    
+    candidates1.size > 0 match {
+      case true => candidates1
+      case _ => {
+        val candidates2 = extractedKnowledgeBaseSideInfo.filter(x => {
+          //当該sentenceで、ClaimNodeだけを選択　ANDのリレーションがあるものは自明にTrue
+          val query = "MATCH (n:SemiGlobalClaimNode) - [e:SemiGlobalEdge] - (m:SemiGlobalClaimNode) WHERE n.propositionId ='%s' AND n.sentenceId ='%s' AND e.logicType='AND' RETURN n, e, m".format(x.propositionId, x.sentenceId)
+          val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "e", transversalState)
+          val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+          neo4jRecords.records.size match {
+            case 0 => false //すでにClaimとしてsentenceが存在していて、そのsentenceのリレーションにANDがあればそれを優先する。仮にORがあったとしても。
+            case _ => true
+          }
+        })
+        candidates2.size > 0 match {
+          case true => candidates2
+          case _ => List.empty[KnowledgeBaseSideInfo] //単独でもないかつANDのリレーションもない状態（ORのリレーションしかに）場合は、真偽が自明にならない。
+        }
+      }
+    }
+  }
 
   /**
    *
@@ -233,12 +293,13 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    */
   private def checkOnlyClaimNodes(neo4jRecords: Neo4jRecords, targetMatchedPropositionInfoList: List[KnowledgeBaseSideInfo], transversalState:TransversalState): List[KnowledgeBaseSideInfo] = {
 
+
     val claimMatchedPropositionInfo: List[KnowledgeBaseSideInfo] = neo4jRecords.records.foldLeft(List.empty[KnowledgeBaseSideInfo]) {
       (acc, x) => {
         val surface1: String = x(0).value.localNode.get.predicateArgumentStructure.surface
         val caseStr: String = x(1).value.localEdge.get.caseStr
         val surface2: String = x(2).value.localNode.get.predicateArgumentStructure.surface
-        val query = "MATCH (n1:ClaimNode)-[e:LocalEdge]->(n2:ClaimNode) WHERE n1.surface='%s' AND e.caseName='%s' AND n2.surface='%s' RETURN n1, e, n2".format(surface1, caseStr, surface2)
+        val query = "MATCH (n1:ClaimNode)-[e:LocalEdge]->(n2:ClaimNode) WHERE n1.surface=\"%s\" AND e.caseName='%s' AND n2.surface=\"%s\" RETURN n1, e, n2".format(surface1, caseStr, surface2)
         val jsonStr: String = Neo4JUtilsImpl().getCypherQueryResult(query, "", transversalState)
         val neo4jRecordsForClaim: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
         val additionalMatchedPropositionInfo = neo4jRecordsForClaim.records.foldLeft(List.empty[KnowledgeBaseSideInfo]) {
@@ -247,7 +308,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
             val sentenceId = x2.head.value.localNode.get.sentenceId            
             //val matchedFeatureInfo = MatchedFeatureInfo(sentenceId, 1)
             //acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List(matchedFeatureInfo), List("exact-match"))
-            acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List.empty[MatchedFeatureInfo], List("ClauseBaseMatch"))
+
+            acc2 :+ KnowledgeBaseSideInfo(propositionId, sentenceId, List.empty[MatchedFeatureInfo], List.empty[String])
           }
         }
         acc ::: additionalMatchedPropositionInfo
@@ -260,17 +322,37 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     if (claimMatchedPropositionInfo.size < neo4jRecords.records.size) return List.empty[KnowledgeBaseSideInfo]
 
     //val candidates: List[MatchedPropositionInfo] = claimMatchedPropositionInfo.groupBy(identity).mapValues(_.size).map(_._1).toList
-    val candidates: List[KnowledgeBaseSideInfo] = claimMatchedPropositionInfo.distinct
+    val candidates: List[KnowledgeBaseSideInfo] = checkOtherRelation(claimMatchedPropositionInfo.distinct, transversalState) 
     //candidatesは、propositionId上の重複はない。
     if (candidates.size == 0) return List.empty[KnowledgeBaseSideInfo]
+
+        
+    //neo4jRecordsは、Premiseの情報
+    val sentenceIdOnPremiseSide = neo4jRecords.records.map(x => x(0).value.localNode.get.sentenceId).distinct.head
+    val neo4jUtils = Neo4JUtilsImpl()
+    val existDenialWord = getExistDenialWord(neo4jUtils, sentenceIdOnPremiseSide, transversalState)
+
     //ensure there are no Premise. only claim!
-    val finalChoice: List[KnowledgeBaseSideInfo] = candidates.filterNot(x => this.havePremise(x, transversalState))
+    val finalChoice: List[KnowledgeBaseSideInfo] = candidates.filterNot(x => havePremise(x, transversalState) || checkNegativeMatch(neo4jUtils, x.sentenceId,  existDenialWord, transversalState))
     finalChoice.size match {
       case 0 => List.empty[KnowledgeBaseSideInfo]
       case _ => finalChoice ::: targetMatchedPropositionInfoList
     }
   }
 
+  private def getExistDenialWord(neo4jUtils:Neo4JUtilsImpl, sentenceId:String, transversalState:TransversalState):Boolean = {    
+    val query = "MATCH (n) WHERE n.sentenceId='%s' AND n.isDenialWord='true' AND (n.caseType='ROOT' OR n.caseType='文末') RETURN n".format(sentenceId)
+    val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "", transversalState)
+    val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+    neo4jRecords.records.size > 0
+  }
+
+  private def checkNegativeMatch(neo4jUtils:Neo4JUtilsImpl, sentenceId:String, existDenialWord:Boolean, transversalState:TransversalState): Boolean = {
+    val query = "MATCH (n) WHERE n.sentenceId='%s' AND n.isDenialWord='%s' AND (n.caseType='ROOT' OR n.caseType='文末') RETURN n".format(sentenceId, existDenialWord)
+    val jsonStr: String = neo4jUtils.getCypherQueryResult(query, "", transversalState)
+    val neo4jRecords: Neo4jRecords = Json.parse(jsonStr).as[Neo4jRecords]
+    neo4jRecords.records.size == 0
+  }
   /**
    *
    * @param edge
@@ -308,7 +390,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     //val coveredPropositionEdges:List[CoveredPropositionEdge] = analyzeGraphKnowledge(getUnsettledEdges(aso), aso, transversalState)
     val coveredPropositionEdges = aso.deductionResult.coveredPropositionEdges
     if (coveredPropositionEdges.size == 0) return aso
-    val result = checkFinal(aso, deductionUnitName, coveredPropositionEdges, transversalState)
+    checkFinal(aso, deductionUnitName, coveredPropositionEdges, transversalState)
+    /*
     if(!result.deductionResult.status) return result
     //This process requires that the Premise has already finished in calculating the DeductionResult
     if (aso.knowledgeBaseSemiGlobalNode.sentenceType == SentenceType.CLAIM.index) {
@@ -351,6 +434,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
     } else {
       result
     }
+    */
   }
 
   private def deduce(index:Int, targetJson:String, resultJson:String, endPoints:Seq[Endpoint], transversalState:TransversalState): (Int, String, String) ={
@@ -366,7 +450,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
 
     if(endpoint.host.equals(NO_HOST) || endpoint.port.equals(NO_PORT) || endpoint.name.equals(NO_NAME)) return (targetJson, resultJson)
     val analyzedSentenceObjects: AnalyzedSentenceObjects = Json.parse(resultJson).as[AnalyzedSentenceObjects]
-    val notFinished = analyzedSentenceObjects.analyzedSentenceObjects.filterNot(x => x.deductionResult.status) 
+    val notFinished = analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.deductionResult.authenticityType == AuthenticityType.INSUFFICIENT.index) 
     if(notFinished.size > 0) {      
       val targets:List[AnalyzedSentenceObject] = notFinished
       val result = ToposoidUtils.callComponent(            
@@ -395,11 +479,9 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
           case _ => {
             val confirmedCoveredPropositionEdges = x.deductionResult.coveredPropositionEdges.filter(y => y.sourceNode.isConfirmed && y.destinationNode.isConfirmed)
             val deductionReulst = DeductionResult(
-              status = x.deductionResult.status, 
               authenticityType = x.deductionResult.authenticityType, 
               coveredPropositionEdges = (confirmedCoveredPropositionEdges ++ coveredPropositionEdges.head.coveredPropositionEdges).distinct, 
               evidenceKnowledgeList = x.deductionResult.evidenceKnowledgeList, 
-              havePremiseInGivenProposition = x.deductionResult.havePremiseInGivenProposition,
               deductionPhaseType = x.deductionResult.deductionPhaseType)
             val aso = AnalyzedSentenceObject(x.nodeMap, x.edgeList, x.knowledgeBaseSemiGlobalNode, deductionReulst)
             analyze(aso, acc, endpoint.name, transversalState)
