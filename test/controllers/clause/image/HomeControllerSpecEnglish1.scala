@@ -80,8 +80,8 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
   val knowledgeForImageA = KnowledgeForImage(getUUID(), imageReferenceA)        
   val referenceNotA = Reference(url = "", surface = "cats", surfaceIndex = 4, isWholeSentence = false,
     originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image1.jpg")
-  val imageReferenceNotA = ImageReference(referenceA, x = 11, y = 11, width = 466, height = 310)
-  val knowledgeForImageNotA = KnowledgeForImage(getUUID(), imageReferenceA)        
+  val imageReferenceNotA = ImageReference(referenceNotA, x = 11, y = 11, width = 466, height = 310)
+  val knowledgeForImageNotA = KnowledgeForImage(getUUID(), imageReferenceNotA)        
 
 
   val sentenceB = "There is a dog."
@@ -92,8 +92,8 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
   val knowledgeForImageB = KnowledgeForImage(getUUID(), imageReferenceB)      
   val referenceNotB = Reference(url = "", surface = "dog", surfaceIndex = 3, isWholeSentence = false,
     originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg")  
-  val imageReferenceNotB = ImageReference(referenceB, x = 77, y = 98, width = 433, height = 222)
-  val knowledgeForImageNotB = KnowledgeForImage(getUUID(), imageReferenceB)      
+  val imageReferenceNotB = ImageReference(referenceNotB, x = 77, y = 98, width = 433, height = 222)
+  val knowledgeForImageNotB = KnowledgeForImage(getUUID(), imageReferenceNotB)      
 
   val sentenceC = "A large truck is parked."
   val referenceC = Reference(url = "", surface = "truck", surfaceIndex = 2, isWholeSentence = false,
@@ -203,7 +203,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
 
   "The specification1_4" should {
     "returns an appropriate response" in {
-      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageA), List.empty[KnowledgeForTable])))
+      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageNotA), List.empty[KnowledgeForTable])))
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
         .withHeaders("Content-type" -> "application/json", TRANSVERSAL_STATE.str -> transversalStateJson)
