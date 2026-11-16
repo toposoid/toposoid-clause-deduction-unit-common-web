@@ -101,10 +101,23 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
     originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg")  
   val imageReferenceB = ImageReference(referenceB, x = 77, y = 98, width = 433, height = 222)
   val knowledgeForImageB = KnowledgeForImage(getUUID(), imageReferenceB)      
+
+  val referenceOhterB = Reference(url = "", surface = "dog", surfaceIndex = 3, isWholeSentence = false,
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image3.jpg")
+  val imageReferenceOtherB = ImageReference(referenceOhterB, x = 11, y = 11, width = 466, height = 310)
+  val knowledgeForImageOtherB = KnowledgeForImage(getUUID(), imageReferenceOtherB)        
+
   val referenceNotB = Reference(url = "", surface = "dog", surfaceIndex = 3, isWholeSentence = false,
     originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image2.jpg")  
   val imageReferenceNotB = ImageReference(referenceNotB, x = 77, y = 98, width = 433, height = 222)
   val knowledgeForImageNotB = KnowledgeForImage(getUUID(), imageReferenceNotB)      
+
+  val referenceOtherNotB = Reference(url = "", surface = "dog", surfaceIndex = 4, isWholeSentence = false,
+    originalUrlOrReference = "/app/toposoid-clause-deduction-unit-common-web/test/data/images/test_image3.jpg")
+  val imageReferenceOtherNotB = ImageReference(referenceOtherNotB, x = 11, y = 11, width = 466, height = 310)
+  val knowledgeForImageOtherNotB = KnowledgeForImage(getUUID(), imageReferenceOtherNotB)        
+
+
 
   val sentenceC = "A large truck is parked."
   val referenceC = Reference(url = "", surface = "truck", surfaceIndex = 2, isWholeSentence = false,
@@ -269,7 +282,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
   "The specification1_7" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageA), List.empty[KnowledgeForTable])))
-      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageA), List.empty[KnowledgeForTable])))
+      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageNotA), List.empty[KnowledgeForTable])))
 
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
@@ -289,7 +302,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
   "The specification1_8" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageA), List.empty[KnowledgeForTable])))
-      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageB), List.empty[KnowledgeForTable])))
+      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageOtherNotA), List.empty[KnowledgeForTable])))
 
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
@@ -308,8 +321,8 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
 
   "The specification1_9" should {
     "returns an appropriate response" in {
-      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageB), List.empty[KnowledgeForTable])))
-      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageA), List.empty[KnowledgeForTable])))
+      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageOtherA), List.empty[KnowledgeForTable])))
+      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageNotA), List.empty[KnowledgeForTable])))
 
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
@@ -328,8 +341,8 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
 
   "The specification1_10" should {
     "returns an appropriate response" in {
-      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageB), List.empty[KnowledgeForTable])))
-      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageB), List.empty[KnowledgeForTable])))
+      val propositionId = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceA, List(knowledgeForImageOtherA), List.empty[KnowledgeForTable])))
+      val propositionId2 = TestUtilsEx.registerKnowledge(lang,transversalState, List((sentenceNotA, List(knowledgeForImageOtherNotA), List.empty[KnowledgeForTable])))
 
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
@@ -394,7 +407,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
         lang =lang,
         transversalState=transversalState, 
         premises = List((sentenceA, List(knowledgeForImageA), List.empty[KnowledgeForTable])),
-        claims = List((sentenceB, List(knowledgeForImageC), List.empty[KnowledgeForTable]))
+        claims = List((sentenceB, List(knowledgeForImageOtherB), List.empty[KnowledgeForTable]))
       )            
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
       val fr = FakeRequest(POST, "/execute")
@@ -416,7 +429,7 @@ class HomeControllerSpecEnglish1 extends PlaySpec with BeforeAndAfter with Befor
       val propositionId1 = TestUtilsEx.registerKnowledge(
         lang =lang,
         transversalState=transversalState, 
-        premises = List((sentenceB, List(knowledgeForImageC), List.empty[KnowledgeForTable])),
+        premises = List((sentenceB, List(knowledgeForImageOtherB), List.empty[KnowledgeForTable])),
         claims = List((sentenceA, List(knowledgeForImageA), List.empty[KnowledgeForTable]))
       )            
       val json = TestUtilsEx.prepairInputJson(lang, transversalState, List((paraphraseA, List(knowledgeForImageParaA), List.empty[KnowledgeForTable])))
