@@ -162,7 +162,7 @@ class HomeControllerSpecEnglish2 extends PlaySpec with BeforeAndAfter with Befor
 
   val lang = "en_US"
 
-   "The specification2_1" should {
+  "The specification2_1" should {
     "returns an appropriate response" in {
       val propositionId = TestUtilsEx.registerKnowledge(
         lang =lang,
