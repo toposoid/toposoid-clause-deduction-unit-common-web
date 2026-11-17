@@ -85,11 +85,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
       analyzedSentenceObjects.analyzedSentenceObjects.filter(x => x.deductionResult.authenticityType == AuthenticityType.INSUFFICIENT.index).size match {
         case 0 => {
           logger.info(ToposoidUtils.formatMessageForLogger("All results from the previous inference unit were OK.", transversalState.userId))      
-          false
+          true
         }
         case _ => {
           logger.info(ToposoidUtils.formatMessageForLogger("An NG result was found in the output of the previous inference unit.", transversalState.userId))      
-          true
+          false
         } 
       }
     }
